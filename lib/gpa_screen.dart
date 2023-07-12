@@ -114,30 +114,59 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   Widget homeScreenBody(ModelTheme themeNotifier) {
-    return SingleChildScrollView(
-      child: addingColumn(themeNotifier),
-    );
+    return addingColumn(themeNotifier);
   }
 
   Widget addingColumn(ModelTheme themeNotifier) {
-    return Column(
-      children: [
-        for (int i = 0; i < dropDown[0].length; i++) ...[
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              // color: color[i],
-              gradient: LinearGradient(colors: themeNotifier.isDark ? colorDark : colorLight),
-            ),
-            padding: const EdgeInsets.all(5),
-            margin:
-                const EdgeInsets.only(left: 15, right: 15, top: 8, bottom: 8),
-            child: addingDropDown(i),
+    return ListView.builder(
+      itemCount: dropDown[0].length,
+      itemBuilder: (context, index) {
+        return Container(
+          alignment: Alignment.center,
+          height: 50,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            gradient: LinearGradient(colors: themeNotifier.isDark ? colorDark : colorLight),
           ),
-        ],
-        addingButtons(),
-        addingLastRow(),
-      ],
+          padding: const EdgeInsets.all(5),
+          margin: const EdgeInsets.only(left: 15, right: 15, top: 8, bottom: 8),
+          child: addingDropDown(index),
+        );
+      },
+    );
+  }
+
+  Widget addingDropDown(int i) {
+    return ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.horizontal,
+      itemCount: 2,
+      itemBuilder: (context, index) {
+        int j = 0;
+        if(index == 0){
+          return const Text("Cr: ");
+        }
+        return ButtonTheme(
+          alignedDropdown: true,
+          child: DropdownButton(
+            value: dropDown[j][i],
+            icon: const Icon(Icons.keyboard_arrow_down),
+            items: items[j].map((String items) {
+              return DropdownMenuItem(
+                value: items,
+                child: Text(items),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              setState(
+                () {
+                  dropDown[j][i] = newValue!;
+                },
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
@@ -186,44 +215,6 @@ class MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-    );
-  }
-
-  Widget addingDropDown(int i) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        for (int j = 0; j < dropDown.length; j++) ...[
-          Text(
-            whatIt[j],
-            style: const TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 15
-              ),
-          ),
-          ButtonTheme(
-            alignedDropdown: true,
-            child: DropdownButton(
-              value: dropDown[j][i],
-              items: items[j].map((String items) {
-                return DropdownMenuItem(
-                  value: items,
-                  child: Text(items),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(
-                  () {
-                    dropDown[j][i] = newValue!;
-                  },
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: right[j]),
-          ),
-        ],
-      ],
     );
   }
 
