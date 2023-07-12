@@ -204,7 +204,6 @@ class MyHomePageState extends State<MyHomePage> {
             alignedDropdown: true,
             child: DropdownButton(
               value: dropDown[j][i],
-              icon: const Icon(Icons.keyboard_arrow_down),
               items: items[j].map((String items) {
                 return DropdownMenuItem(
                   value: items,
