@@ -46,7 +46,7 @@ class MyHomePageState extends State<MyHomePage> {
   ];
 
   var whatIt = ["Cr: ", 'Grade: '];
-  var right = [25.0, 0.0];
+  var left = [25.0, 0.0];
 
   var gpa = 0.0;
   String gpaDisplay = "0.00";
@@ -119,8 +119,14 @@ class MyHomePageState extends State<MyHomePage> {
 
   Widget addingColumn(ModelTheme themeNotifier) {
     return ListView.builder(
-      itemCount: dropDown[0].length,
+      itemCount: dropDown[0].length + 2,
       itemBuilder: (context, index) {
+        if(index == dropDown[0].length){
+          return addingButtons();
+        }
+        else if(index == dropDown[0].length + 1){
+          return addingLastRow();
+        }
         return Container(
           alignment: Alignment.center,
           height: 50,
@@ -140,11 +146,36 @@ class MyHomePageState extends State<MyHomePage> {
     return ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.horizontal,
-      itemCount: 2,
+      itemCount: 4,
       itemBuilder: (context, index) {
         int j = 0;
+        String text = "";
         if(index == 0){
-          return const Text("Cr: ");
+          text = "Cr:";
+          j = 1;
+        }
+        else if(index == 2){
+          text = "Grade:";
+          j = 0;
+        }
+
+        if(index == 0 || index == 2){
+          return Padding(
+            padding: EdgeInsets.only(left: left[j], top: 10),
+            child: Text(
+              text,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+              ),
+            ),
+          );
+        }
+        else if(index == 1) {
+          j = 0;
+        }
+        else if(index == 3){
+          j = 1;
         }
         return ButtonTheme(
           alignedDropdown: true,
