@@ -1,6 +1,6 @@
 # GPA Calculator
 
-First Flutter Project that helps calculate SGPA and CGPA for FAST Student(other Universities too if they have the same grading and GPA system).
+My First Flutter Project. It helps calculate SGPA and CGPA for FAST Student(other Universities too if they have the same grading and GPA system).
 
 ### FAST Grading System
 
