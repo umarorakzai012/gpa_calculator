@@ -8,16 +8,15 @@ class MyHomePage extends StatefulWidget {
 
   @override
   MyHomePageState createState() => MyHomePageState(themeNotifier);
-
-  static MyHomePageState? of(BuildContext context) =>
-      context.findAncestorStateOfType<MyHomePageState>();
 }
+
+List<List<String>> _dropDown = [[], []];
+var _firstTime = true;
 
 class MyHomePageState extends State<MyHomePage> {
   MyHomePageState(this.themeNotifier);
 
   final ModelTheme themeNotifier;
-  List<List<String>> dropDown = [[], []];
 
   var items = [
     ['0', '4', '3', '2', '1'],
@@ -45,8 +44,6 @@ class MyHomePageState extends State<MyHomePage> {
   List<Color> colorLight = [
     const Color(0xFF6DE195),
     const Color(0xFFC4E759),
-    // Colors.blueAccent,
-    // Colors.green,
   ];
 
   var whatIt = ["Cr: ", 'Grade: '];
@@ -57,8 +54,11 @@ class MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    for (int i = 0; i < 5; i++) {
-      addMore();
+    if(_firstTime){
+      for (int i = 0; i < 5; i++) {
+        addMore();
+      }
+      _firstTime = false;
     }
     super.initState();
   }
@@ -74,12 +74,13 @@ class MyHomePageState extends State<MyHomePage> {
 
   Widget addingColumn() {
     return ListView.builder(
-      itemCount: dropDown[0].length + 2,
+      physics: const BouncingScrollPhysics(),
+      itemCount: _dropDown[0].length + 2,
       itemBuilder: (context, index) {
-        if(index == dropDown[0].length){
+        if(index == _dropDown[0].length){
           return addingButtons();
         }
-        else if(index == dropDown[0].length + 1){
+        else if(index == _dropDown[0].length + 1){
           return addingLastRow();
         }
         return Container(
@@ -97,62 +98,56 @@ class MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget addingDropDown(int i) {
-    return ListView.builder(
-      shrinkWrap: true,
-      scrollDirection: Axis.horizontal,
-      itemCount: 4,
-      itemBuilder: (context, index) {
-        int j = 0;
-        String text = "";
-        if(index == 0){
-          text = "Cr:";
-          j = 1;
-        }
-        else if(index == 2){
-          text = "Grade:";
-          j = 0;
-        }
+  Widget addingDropDown(int i){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        Row(
+          children: [
+            makeText("Cr: "),
+            makeDropDown(i, 0),
+          ],
+        ),
+        Row(
+          children: [
+            makeText("Grade: "),
+            makeDropDown(i, 1),
+          ],
+        )
+      ],
+    );
+  }
 
-        if(index == 0 || index == 2){
-          return Padding(
-            padding: EdgeInsets.only(left: left[j], top: 10),
-            child: Text(
-              text,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-              ),
-            ),
+  Widget makeDropDown(int i, int j){
+    return ButtonTheme(
+      alignedDropdown: true,
+      child: DropdownButton(
+        value: _dropDown[j][i],
+        icon: const Icon(Icons.keyboard_arrow_down),
+        items: items[j].map((String items) {
+          return DropdownMenuItem(
+            value: items,
+            child: Text(items),
           );
-        }
-        else if(index == 1) {
-          j = 0;
-        }
-        else if(index == 3){
-          j = 1;
-        }
-        return ButtonTheme(
-          alignedDropdown: true,
-          child: DropdownButton(
-            value: dropDown[j][i],
-            icon: const Icon(Icons.keyboard_arrow_down),
-            items: items[j].map((String items) {
-              return DropdownMenuItem(
-                value: items,
-                child: Text(items),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {
-              setState(
-                () {
-                  dropDown[j][i] = newValue!;
-                },
-              );
+        }).toList(),
+        onChanged: (String? newValue) {
+          setState(
+            () {
+              _dropDown[j][i] = newValue!;
             },
-          ),
-        );
-      },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget makeText(String text){
+    return Text(
+      text,
+      style: const TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 15,
+      ),
     );
   }
 
@@ -207,16 +202,16 @@ class MyHomePageState extends State<MyHomePage> {
   void calculateGPA() {
     setState(() {
       gpa = 0.00;
-      if (dropDown[0].isEmpty) {
+      if (_dropDown[0].isEmpty) {
         gpaDisplay = gpa.toStringAsFixed(2);
         return;
       }
       var totalCreditHours = 0;
-      for (int i = 0; i < dropDown[0].length; i++) {
-        totalCreditHours += int.parse(dropDown[0][i]);
-        var selected = dropDown[1][i];
+      for (int i = 0; i < _dropDown[0].length; i++) {
+        totalCreditHours += int.parse(_dropDown[0][i]);
+        var selected = _dropDown[1][i];
         var index = items[1].indexOf(selected);
-        gpa += (int.parse(dropDown[0][i]) * gradePoint[index]);
+        gpa += (int.parse(_dropDown[0][i]) * gradePoint[index]);
       }
       gpa /= totalCreditHours == 0 ? 1 : totalCreditHours;
       gpaDisplay = gpa.toStringAsFixed(2);
@@ -225,34 +220,16 @@ class MyHomePageState extends State<MyHomePage> {
 
   void addMore() {
     setState(() {
-      dropDown[0].add('0');
-      dropDown[1].add('A+/A');
+      _dropDown[0].add('0');
+      _dropDown[1].add('A+/A');
     });
   }
 
   void removeRow() {
     setState(() {
-      if (dropDown[0].isEmpty) return;
-      for (int i = dropDown[0].length - 1; i > -1; i--) {
-        if (dropDown[0][i].compareTo('0') == 0 &&
-            dropDown[1][i].compareTo("A+/A") == 0) {
-          dropDown[0].removeAt(i);
-          dropDown[1].removeAt(i);
-          return;
-        }
-      }
-      for (int i = dropDown[0].length - 1; i > -1; i--) {
-        if (dropDown[0][i].compareTo('0') == 0) {
-          dropDown[0].removeAt(i);
-          dropDown[1].removeAt(i);
-          return;
-        }
-      }
-      dropDown[0].removeAt(dropDown[0].length - 1);
-      dropDown[1].removeAt(dropDown[1].length - 1);
-      return;
+      if (_dropDown[0].isEmpty) return;
+      _dropDown[0].removeLast();
+      _dropDown[1].removeLast();
     });
   }
-  
-  
 }

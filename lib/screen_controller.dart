@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'gpa_screen.dart';
+import 'sgpa_screen.dart';
 import 'model_theme.dart';
+import 'cgpa_screen.dart';
 
 class ScreenController extends StatefulWidget{
   const ScreenController({super.key});
@@ -64,7 +65,7 @@ class _ScreenControllerState extends State<ScreenController> {
           ),
         ],
       ),
-      body: _selected == 0 ? MyHomePage(themeNotifier) : MyHomePage(themeNotifier),
+      body: _selected == 0 ? MyHomePage(themeNotifier) : CgpaScreen(themeNotifier),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selected,
         selectedItemColor: Colors.blueAccent,
