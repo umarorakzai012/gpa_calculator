@@ -1,16 +1,17 @@
-# gpa_calculator
+# GPA Calculator
 
-A new Flutter project.
+First Flutter Project that helps calculate SGPA and CGPA for FAST Student(other Universities too if they have the same grading and GPA system).
 
-## Getting Started
+### FAST Grading System
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+A+/A -> 4.00  
+A-   -> 3.67  
+B+   -> 3.33  
+B    -> 3.00  
+B-   -> 2.67  
+C+   -> 2.33  
+C    -> 2.00  
+C-   -> 1.67  
+D+   -> 1.33  
+D    -> 1.00  
+F    -> 0
