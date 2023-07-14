@@ -6,6 +6,8 @@ import 'model_theme.dart';
 List<String> _totalCreditHours = [];
 List<String> _sgpa = [];
 var _first = true;
+var _cgpa = 0.0;
+var _cgpaDisplay = "0.00";
 
 List<GlobalKey<FormState>> _formKey = [];
 
@@ -20,8 +22,6 @@ class CgpaScreen extends StatefulWidget{
 
 class _CgpaScreenState extends State<CgpaScreen> {
   final ModelTheme themeNotifier;
-  var _cgpa = 0.0;
-  var _cgpaDisplay = "0.00";
 
   _CgpaScreenState(this.themeNotifier);
 
@@ -29,7 +29,7 @@ class _CgpaScreenState extends State<CgpaScreen> {
   void initState() {
     if(_first){
       for(int i = 0; i < 5; i++){
-      addMore();
+        addMore();
       }
       _first = false;
     }
@@ -39,6 +39,7 @@ class _CgpaScreenState extends State<CgpaScreen> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      physics: const BouncingScrollPhysics(),
       itemCount: _totalCreditHours.length + 2,
       itemBuilder: (context, index) {
         if(index == _totalCreditHours.length){
@@ -80,7 +81,7 @@ class _CgpaScreenState extends State<CgpaScreen> {
               children: <Widget>[
                 makeText("Total Cr: "),
                 Container(
-                  width: 50,
+                  width: 30,
                   margin: const EdgeInsets.only(bottom: 8),
                   child: TextFormField(
                     decoration: const InputDecoration(

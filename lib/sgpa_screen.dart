@@ -12,6 +12,8 @@ class MyHomePage extends StatefulWidget {
 
 List<List<String>> _dropDown = [[], []];
 var _firstTime = true;
+var _gpa = 0.0;
+String _gpaDisplay = "0.00";
 
 class MyHomePageState extends State<MyHomePage> {
   MyHomePageState(this.themeNotifier);
@@ -48,9 +50,6 @@ class MyHomePageState extends State<MyHomePage> {
 
   var whatIt = ["Cr: ", 'Grade: '];
   var left = [25.0, 0.0];
-
-  var gpa = 0.0;
-  String gpaDisplay = "0.00";
 
   @override
   void initState() {
@@ -169,7 +168,7 @@ class MyHomePageState extends State<MyHomePage> {
         Padding(
           padding: const EdgeInsets.only(top: 15.0, bottom: 25),
           child: Text(
-            "GPA: $gpaDisplay",
+            "GPA: $_gpaDisplay",
             style: const TextStyle(fontSize: 20.0),
           ),
         ),
@@ -201,9 +200,9 @@ class MyHomePageState extends State<MyHomePage> {
 
   void calculateGPA() {
     setState(() {
-      gpa = 0.00;
+      _gpa = 0.00;
       if (_dropDown[0].isEmpty) {
-        gpaDisplay = gpa.toStringAsFixed(2);
+        _gpaDisplay = _gpa.toStringAsFixed(2);
         return;
       }
       var totalCreditHours = 0;
@@ -211,10 +210,10 @@ class MyHomePageState extends State<MyHomePage> {
         totalCreditHours += int.parse(_dropDown[0][i]);
         var selected = _dropDown[1][i];
         var index = items[1].indexOf(selected);
-        gpa += (int.parse(_dropDown[0][i]) * gradePoint[index]);
+        _gpa += (int.parse(_dropDown[0][i]) * gradePoint[index]);
       }
-      gpa /= totalCreditHours == 0 ? 1 : totalCreditHours;
-      gpaDisplay = gpa.toStringAsFixed(2);
+      _gpa /= totalCreditHours == 0 ? 1 : totalCreditHours;
+      _gpaDisplay = _gpa.toStringAsFixed(2);
     });
   }
 
