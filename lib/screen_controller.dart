@@ -5,7 +5,7 @@ import 'sgpa_screen.dart';
 import 'model_theme.dart';
 import 'cgpa_screen.dart';
 
-class ScreenController extends StatefulWidget{
+class ScreenController extends StatefulWidget {
   const ScreenController({super.key});
 
   @override
@@ -65,7 +65,9 @@ class _ScreenControllerState extends State<ScreenController> {
           ),
         ],
       ),
-      body: _selected == 0 ? MyHomePage(themeNotifier) : CgpaScreen(themeNotifier),
+      body: _selected == 0
+          ? MyHomePage(themeNotifier)
+          : CgpaScreen(themeNotifier),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selected,
         selectedItemColor: Colors.blueAccent,
@@ -74,10 +76,7 @@ class _ScreenControllerState extends State<ScreenController> {
             icon: Icon(Icons.calculate),
             label: "SGPA",
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calculate),
-            label: "CGPA"
-          )
+          BottomNavigationBarItem(icon: Icon(Icons.calculate), label: "CGPA")
         ],
         onTap: (value) {
           setState(() {

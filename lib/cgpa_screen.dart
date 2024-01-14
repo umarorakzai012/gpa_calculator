@@ -11,24 +11,22 @@ var _cgpaDisplay = "0.00";
 
 List<GlobalKey<FormState>> _formKey = [];
 
-class CgpaScreen extends StatefulWidget{
+class CgpaScreen extends StatefulWidget {
   final ModelTheme themeNotifier;
 
   const CgpaScreen(this.themeNotifier, {super.key});
 
   @override
-  State<CgpaScreen> createState() => _CgpaScreenState(themeNotifier);
+  State<CgpaScreen> createState() => _CgpaScreenState();
 }
 
 class _CgpaScreenState extends State<CgpaScreen> {
-  final ModelTheme themeNotifier;
-
-  _CgpaScreenState(this.themeNotifier);
+  _CgpaScreenState();
 
   @override
   void initState() {
-    if(_first){
-      for(int i = 0; i < 5; i++){
+    if (_first) {
+      for (int i = 0; i < 5; i++) {
         addMore();
       }
       _first = false;
@@ -42,10 +40,9 @@ class _CgpaScreenState extends State<CgpaScreen> {
       physics: const BouncingScrollPhysics(),
       itemCount: _totalCreditHours.length + 2,
       itemBuilder: (context, index) {
-        if(index == _totalCreditHours.length){
+        if (index == _totalCreditHours.length) {
           return addingButtons();
-        }
-        else if(index == _totalCreditHours.length + 1){
+        } else if (index == _totalCreditHours.length + 1) {
           return addingLastRow();
         }
         return addFormRow(index);
@@ -62,15 +59,16 @@ class _CgpaScreenState extends State<CgpaScreen> {
     const Color(0xFFC4E759),
   ];
 
-  Widget addFormRow(int i){
+  Widget addFormRow(int i) {
     return Form(
       key: _formKey[i],
       child: Container(
         alignment: Alignment.center,
-        height: 50,
+        height: 60,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            gradient: LinearGradient(colors: themeNotifier.isDark ? colorDark : colorLight),
+          borderRadius: BorderRadius.circular(15),
+          gradient: LinearGradient(
+              colors: widget.themeNotifier.isDark ? colorDark : colorLight),
         ),
         padding: const EdgeInsets.all(5),
         margin: const EdgeInsets.only(left: 15, right: 15, top: 8, bottom: 8),
@@ -127,7 +125,7 @@ class _CgpaScreenState extends State<CgpaScreen> {
     );
   }
 
-  Widget makeText(String text){
+  Widget makeText(String text) {
     return Text(
       text,
       style: const TextStyle(
@@ -185,7 +183,7 @@ class _CgpaScreenState extends State<CgpaScreen> {
     );
   }
 
-  void addMore(){
+  void addMore() {
     setState(() {
       _formKey.add(GlobalKey<FormState>());
       _totalCreditHours.add("");
@@ -202,7 +200,7 @@ class _CgpaScreenState extends State<CgpaScreen> {
     });
   }
 
-  void calculateCGPA(){
+  void calculateCGPA() {
     setState(() {
       _cgpa = 0.00;
       if (_totalCreditHours.isEmpty) {
@@ -211,7 +209,8 @@ class _CgpaScreenState extends State<CgpaScreen> {
       }
       var totalCreditHours = 0;
       for (int i = 0; i < _totalCreditHours.length; i++) {
-        var currentIndexCR = _totalCreditHours[i] != "" ? int.parse(_totalCreditHours[i]) : 0;
+        var currentIndexCR =
+            _totalCreditHours[i] != "" ? int.parse(_totalCreditHours[i]) : 0;
         var currentIndexSGPA = _sgpa[i] != "" ? double.parse(_sgpa[i]) : 0.0;
         totalCreditHours += currentIndexCR;
         _cgpa += (currentIndexCR * currentIndexSGPA);

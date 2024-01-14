@@ -7,7 +7,7 @@ class MyHomePage extends StatefulWidget {
   const MyHomePage(this.themeNotifier, {Key? key}) : super(key: key);
 
   @override
-  MyHomePageState createState() => MyHomePageState(themeNotifier);
+  MyHomePageState createState() => MyHomePageState();
 }
 
 List<List<String>> _dropDown = [[], []];
@@ -16,9 +16,7 @@ var _gpa = 0.0;
 String _gpaDisplay = "0.00";
 
 class MyHomePageState extends State<MyHomePage> {
-  MyHomePageState(this.themeNotifier);
-
-  final ModelTheme themeNotifier;
+  MyHomePageState();
 
   var items = [
     ['0', '4', '3', '2', '1'],
@@ -53,7 +51,7 @@ class MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    if(_firstTime){
+    if (_firstTime) {
       for (int i = 0; i < 5; i++) {
         addMore();
       }
@@ -76,18 +74,18 @@ class MyHomePageState extends State<MyHomePage> {
       physics: const BouncingScrollPhysics(),
       itemCount: _dropDown[0].length + 2,
       itemBuilder: (context, index) {
-        if(index == _dropDown[0].length){
+        if (index == _dropDown[0].length) {
           return addingButtons();
-        }
-        else if(index == _dropDown[0].length + 1){
+        } else if (index == _dropDown[0].length + 1) {
           return addingLastRow();
         }
         return Container(
           alignment: Alignment.center,
-          height: 50,
+          height: 60,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            gradient: LinearGradient(colors: themeNotifier.isDark ? colorDark : colorLight),
+            gradient: LinearGradient(
+                colors: widget.themeNotifier.isDark ? colorDark : colorLight),
           ),
           padding: const EdgeInsets.all(5),
           margin: const EdgeInsets.only(left: 15, right: 15, top: 8, bottom: 8),
@@ -97,7 +95,7 @@ class MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget addingDropDown(int i){
+  Widget addingDropDown(int i) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
@@ -117,7 +115,7 @@ class MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget makeDropDown(int i, int j){
+  Widget makeDropDown(int i, int j) {
     return ButtonTheme(
       alignedDropdown: true,
       child: DropdownButton(
@@ -140,7 +138,7 @@ class MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget makeText(String text){
+  Widget makeText(String text) {
     return Text(
       text,
       style: const TextStyle(
