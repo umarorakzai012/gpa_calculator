@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpa_calculator/update/update_checker.dart';
 import 'package:provider/provider.dart';
 
 import 'sgpa_screen.dart';
@@ -17,6 +18,7 @@ class _ScreenControllerState extends State<ScreenController> {
 
   @override
   Widget build(BuildContext context) {
+    CheckUpdate(fromNavigation: false, context: context);
     return ChangeNotifierProvider(
       create: (_) => ModelTheme(),
       child: Consumer<ModelTheme>(
