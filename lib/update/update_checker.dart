@@ -38,12 +38,12 @@ class CheckUpdate {
     if (today.isAfter(DateTime.parse(lastChecked))) {
       return false;
     }
-    return false;
+    return true;
   }
 
   Future checkForUpdate() async {
     bool completed = false;
-    if (!fromNavigation) {
+    if (fromNavigation) {
       showDialog(
         context: context,
         barrierDismissible: false,
