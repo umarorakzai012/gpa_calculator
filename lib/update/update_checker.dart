@@ -70,7 +70,7 @@ class CheckUpdate {
       }
       String latestVersion = response.data['tag_name'].toString();
       String currentVersion = "v${packageInfo.version}";
-      String appName = packageInfo.appName;
+      String appName = packageInfo.appName.replaceAll(" ", ".");
       if (latestVersion != currentVersion) {
         // https://api.github.com/repos/umarorakzai012/battle_ship/releases/latest
         fileUrl = "$fileUrl/$latestVersion";
