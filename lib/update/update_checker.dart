@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ffi' as ffi;
 import 'dart:io';
 
@@ -42,15 +43,16 @@ class CheckUpdate {
 
   Future checkForUpdate() async {
     bool completed = false;
-    if (fromNavigation) {
+    if (!fromNavigation) {
       showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return const AlertDialog(
             title: Text("Checking For Update"),
-            content:
-                Wrap(children: [Center(child: CircularProgressIndicator())]),
+            content: Wrap(
+              children: [Center(child: CircularProgressIndicator())],
+            ),
           );
         },
       ).whenComplete(() => completed = true);
@@ -71,13 +73,18 @@ class CheckUpdate {
       String latestVersion = response.data['tag_name'].toString();
       String currentVersion = "v${packageInfo.version}";
       String appName = packageInfo.appName.replaceAll(" ", ".");
+      log(appName);
+      log("latest version: $latestVersion");
+      log("currentVersion: $currentVersion");
       if (latestVersion != currentVersion) {
         // https://api.github.com/repos/umarorakzai012/battle_ship/releases/latest
         fileUrl = "$fileUrl/$latestVersion";
         // https://github.com/umarorakzai012/battle_ship/releases/download/v0.1.1
         downloadUrl = "$downloadUrl/$latestVersion";
+        log(downloadUrl);
         String apkName =
             await getSupportedApk(latestVersion.substring(1), appName);
+        log(apkName);
         if (apkName == "") {
           if (fromNavigation) {
             defaultAlertDialog("A Problem Occured",
@@ -89,6 +96,7 @@ class CheckUpdate {
 
         // https://github.com/umarorakzai012/battle_ship/releases/download/v0.1.1/BattleShip-v0.1.1.apk
         downloadUrl = "$downloadUrl/$apkName";
+        log(downloadUrl);
         _showAvailableUpdateAlertDialog(apkName);
       } else if (fromNavigation) {
         defaultAlertDialog(

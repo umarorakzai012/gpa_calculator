@@ -14,11 +14,8 @@ class ScreenController extends StatefulWidget {
 }
 
 class _ScreenControllerState extends State<ScreenController> {
-  var _selected = 0;
-
   @override
   Widget build(BuildContext context) {
-    CheckUpdate(fromNavigation: false, context: context);
     return ChangeNotifierProvider(
       create: (_) => ModelTheme(),
       child: Consumer<ModelTheme>(
@@ -29,6 +26,12 @@ class _ScreenControllerState extends State<ScreenController> {
             debugShowCheckedModeBanner: false,
             home: Consumer<ModelTheme>(
               builder: (context, ModelTheme themeNotifier, child) {
+                WidgetsBinding.instance.addPostFrameCallback(
+                  (timeStamp) => CheckUpdate(
+                    context: context,
+                    fromNavigation: false,
+                  ),
+                );
                 return scaffoldSettings(themeNotifier);
               },
             ),
@@ -51,40 +54,40 @@ class _ScreenControllerState extends State<ScreenController> {
   }
 
   Widget scaffoldSettings(ModelTheme themeNotifier) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("GPA Calculator"),
-        actions: [
-          IconButton(
-            icon: Icon(
-              themeNotifier.isDark ? Icons.nightlight_round : Icons.wb_sunny,
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("GPA Calculator"),
+          actions: [
+            IconButton(
+              icon: Icon(
+                themeNotifier.isDark ? Icons.nightlight_round : Icons.wb_sunny,
+              ),
+              onPressed: () {
+                themeNotifier.isDark
+                    ? themeNotifier.isDark = false
+                    : themeNotifier.isDark = true;
+              },
             ),
-            onPressed: () {
-              themeNotifier.isDark
-                  ? themeNotifier.isDark = false
-                  : themeNotifier.isDark = true;
-            },
+          ],
+          bottom: const TabBar(
+            tabs: [
+              Tab(
+                icon: Icon(Icons.calculate),
+              ),
+              Tab(
+                icon: Icon(Icons.calculate),
+              ),
+            ],
           ),
-        ],
-      ),
-      body: _selected == 0
-          ? MyHomePage(themeNotifier)
-          : CgpaScreen(themeNotifier),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selected,
-        selectedItemColor: Colors.blueAccent,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calculate),
-            label: "SGPA",
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.calculate), label: "CGPA")
-        ],
-        onTap: (value) {
-          setState(() {
-            _selected = value;
-          });
-        },
+        ),
+        body: TabBarView(
+          children: [
+            MyHomePage(themeNotifier),
+            CgpaScreen(themeNotifier),
+          ],
+        ),
       ),
     );
   }
