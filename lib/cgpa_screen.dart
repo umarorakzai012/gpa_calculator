@@ -184,11 +184,10 @@ class _CgpaScreenState extends State<CgpaScreen> {
   }
 
   void addMore() {
-    setState(() {
-      _formKey.add(GlobalKey<FormState>());
-      _totalCreditHours.add("");
-      _sgpa.add("");
-    });
+    _formKey.add(GlobalKey<FormState>());
+    _totalCreditHours.add("");
+    _sgpa.add("");
+    if (!_first) setState(() {});
   }
 
   void removeRow() {

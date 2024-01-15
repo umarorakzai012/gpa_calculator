@@ -84,7 +84,7 @@ class CheckUpdate {
         log(downloadUrl);
         String apkName =
             await getSupportedApk(latestVersion.substring(1), appName);
-        log(apkName);
+        log("appName: $apkName");
         if (apkName == "") {
           if (fromNavigation) {
             defaultAlertDialog("A Problem Occured",

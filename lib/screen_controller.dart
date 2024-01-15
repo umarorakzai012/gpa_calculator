@@ -14,6 +14,8 @@ class ScreenController extends StatefulWidget {
 }
 
 class _ScreenControllerState extends State<ScreenController> {
+  bool _first = true;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -27,10 +29,15 @@ class _ScreenControllerState extends State<ScreenController> {
             home: Consumer<ModelTheme>(
               builder: (context, ModelTheme themeNotifier, child) {
                 WidgetsBinding.instance.addPostFrameCallback(
-                  (timeStamp) => CheckUpdate(
-                    context: context,
-                    fromNavigation: false,
-                  ),
+                  (timeStamp) {
+                    if (_first) {
+                      CheckUpdate(
+                        context: context,
+                        fromNavigation: false,
+                      );
+                      _first = false;
+                    }
+                  },
                 );
                 return scaffoldSettings(themeNotifier);
               },
@@ -74,10 +81,20 @@ class _ScreenControllerState extends State<ScreenController> {
           bottom: const TabBar(
             tabs: [
               Tab(
-                icon: Icon(Icons.calculate),
+                icon: Column(
+                  children: [
+                    Icon(Icons.calculate),
+                    Text("GPA"),
+                  ],
+                ),
               ),
               Tab(
-                icon: Icon(Icons.calculate),
+                icon: Column(
+                  children: [
+                    Icon(Icons.calculate),
+                    Text("CGPA"),
+                  ],
+                ),
               ),
             ],
           ),

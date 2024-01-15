@@ -216,10 +216,9 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   void addMore() {
-    setState(() {
-      _dropDown[0].add('0');
-      _dropDown[1].add('A+/A');
-    });
+    _dropDown[0].add('0');
+    _dropDown[1].add('A+/A');
+    if (!_firstTime) setState(() {});
   }
 
   void removeRow() {
